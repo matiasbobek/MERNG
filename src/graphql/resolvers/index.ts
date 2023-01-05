@@ -1,8 +1,11 @@
 import postsResolvers from "./posts";
 import usersResolvers from "./users";
 
-export default {
+export const resolvers = {
   Query: {
     ...postsResolvers,
+  },
+  Mutation: {
+    ...usersResolvers,
   },
 };

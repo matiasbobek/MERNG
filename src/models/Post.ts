@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
+import Post from "../types/Post";
 
-//TODO: Es necesario usar schemas o puedo usar interfaces de TS?
 const postSchema = new Schema({
   body: String!,
   username: String!,
@@ -24,4 +24,4 @@ const postSchema = new Schema({
   },
 });
 
-export default model("Post", postSchema);
+export default model<Post>("Post", postSchema);

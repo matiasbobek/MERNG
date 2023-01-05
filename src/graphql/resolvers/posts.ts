@@ -1,9 +1,10 @@
-import Post from "../../models/Post";
+import PostModel from "../../models/Post";
+import Post from "../../types/Post";
 
 const Query = {
-  async getPosts() {
+  async getPosts(): Promise<Array<Post>> {
     try {
-      const posts = await Post.find();
+      const posts = await PostModel.find();
       console.log(posts);
       return posts;
     } catch (err: any) {
