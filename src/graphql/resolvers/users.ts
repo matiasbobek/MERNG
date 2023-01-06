@@ -1,30 +1,35 @@
 import UserModel from "../../models/User";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import User from "../../types/User";
-import config from "../../../config";
+import { generateToken } from "../../util/tokens";
 import { UserInputError } from "apollo-server";
-import { validateRegisterInput } from "../../util/validators";
+import {
+  validateLoginInput,
+  validateRegisterInput,
+} from "../../util/validators";
 
-export interface RegisterInput {
+export interface LoginInput {
   username: string;
-  email: string;
   password: string;
+}
+export interface RegisterInput extends LoginInput {
+  email: string;
   confirmPassword: string;
 }
-interface RegisterInputArgs {
-  registerInput: RegisterInput;
+interface InputArgs<T> {
+  inputData: T;
 }
 
+// For the mongoose response when creating a model instance
 export interface DocumentResult<T> {
   _doc: T;
 }
 
 const Mutation = {
-  async register(_: any, args: RegisterInputArgs): Promise<User> {
-    let { password, username, email } = args.registerInput;
+  async register(_: any, args: InputArgs<RegisterInput>): Promise<User> {
+    let { password, username, email } = args.inputData;
 
-    const validation = validateRegisterInput(args.registerInput);
+    const validation = validateRegisterInput(args.inputData);
     if (!validation.valid)
       throw new UserInputError("Required fields missing or wrong", {
         errors: validation.errors,
@@ -49,19 +54,44 @@ const Mutation = {
 
     const result = await newUser.save();
 
-    const token = jwt.sign(
-      {
-        id: result.id,
-        email: result.email,
-        username: result.username,
-      },
-      config.SECRET_JWT_KEY,
-      { expiresIn: "1h" }
-    );
+    const token = generateToken(result);
 
     return {
       ...result._doc,
       id: result._id,
+      token,
+    };
+  },
+
+  async login(_: any, args: InputArgs<LoginInput>): Promise<User> {
+    const { username, password } = args.inputData;
+    const { errors, valid } = validateLoginInput(args.inputData);
+
+    if (!valid) {
+      throw new UserInputError("Invalid login data", {
+        errors,
+      });
+    }
+
+    const user = await UserModel.findOne({ username });
+
+    if (!user) {
+      errors.general = "User not found";
+      throw new UserInputError("User not found", { errors });
+    }
+
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) {
+      errors.general = "Wrong credentials";
+      throw new UserInputError("Wrong credentials", { errors });
+    }
+
+    const token = generateToken(user);
+
+    return {
+      ...user._doc,
+      id: user._id,
       token,
     };
   },

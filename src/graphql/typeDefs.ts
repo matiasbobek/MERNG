@@ -15,6 +15,11 @@ export const typeDefs = gql`
     email: String!
   }
 
+  input LoginInput {
+    username: String!
+    password: String!
+  }
+
   type User {
     id: ID!
     email: String!
@@ -28,6 +33,7 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    register(registerInput: RegisterInput): User!
+    register(inputData: RegisterInput): User!
+    login(inputData: LoginInput): User!
   }
 `;
