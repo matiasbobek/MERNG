@@ -1,12 +1,13 @@
-import { Schema } from "mongoose";
+import { Schema, Types } from "mongoose";
 
 interface Post {
-  body: string;
+  id: Types.ObjectId;
+  postBody: string;
   username: string;
   createdAt: string;
   comments: [
     {
-      body: string;
+      commentBody: string;
       username: string;
       createdAt: string;
     }

@@ -8,14 +8,11 @@ import {
   validateRegisterInput,
 } from "../../util/validators";
 
-export interface LoginInput {
-  username: string;
-  password: string;
-}
-export interface RegisterInput extends LoginInput {
-  email: string;
+export interface RegisterInput extends User {
   confirmPassword: string;
 }
+
+// For the graphql input structure (TODO check if this is ok)
 interface InputArgs<T> {
   inputData: T;
 }
@@ -63,7 +60,7 @@ const Mutation = {
     };
   },
 
-  async login(_: any, args: InputArgs<LoginInput>): Promise<User> {
+  async login(_: any, args: InputArgs<User>): Promise<User> {
     const { username, password } = args.inputData;
     const { errors, valid } = validateLoginInput(args.inputData);
 

@@ -5,12 +5,12 @@ import config from "../config";
 import { typeDefs } from "./graphql/typeDefs";
 import { resolvers } from "./graphql/resolvers";
 
-//TODO: Revisar por qué no anda el process.env.PORT
-const PORT = process.env.PORT || 5000;
+const PORT = config.PORT || 5000;
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: (req) => req,
 });
 
 mongoose.set("strictQuery", true);

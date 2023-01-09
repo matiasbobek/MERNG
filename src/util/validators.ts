@@ -1,7 +1,9 @@
-import { LoginInput, RegisterInput } from "../graphql/resolvers/users";
+import { RegisterInput } from "../graphql/resolvers/users";
+import Post from "../types/Post";
+import User from "../types/User";
 
-export interface ErrorsValidation {
-  errors: LoginInputErrors | RegisterInputErrors;
+export interface ValidationErrors<T> {
+  errors: T;
   valid: boolean;
 }
 
@@ -16,9 +18,22 @@ interface RegisterInputErrors extends LoginInputErrors {
   confirmPassword?: string;
 }
 
+interface GetPostErrors {
+  postId?: string;
+  general?: string;
+}
+
+interface CreatePostErrors {
+  postBody?: string;
+}
+
+/*
+ * User mutation arguments validations
+ */
+
 export function validateRegisterInput(
   registerInput: RegisterInput
-): ErrorsValidation {
+): ValidationErrors<RegisterInputErrors> {
   const { username, email, password, confirmPassword } = registerInput;
   const errors: RegisterInputErrors = {};
 
@@ -46,7 +61,9 @@ export function validateRegisterInput(
   };
 }
 
-export function validateLoginInput(loginInput: LoginInput): ErrorsValidation {
+export function validateLoginInput(
+  loginInput: User
+): ValidationErrors<LoginInputErrors> {
   const { username, password } = loginInput;
   const errors: LoginInputErrors = {};
 
@@ -56,6 +73,39 @@ export function validateLoginInput(loginInput: LoginInput): ErrorsValidation {
 
   if (password.length === 0) {
     errors.password = "Password must not be empty";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length === 0,
+  };
+}
+
+/*
+ * Post mutation arguments validations
+ */
+
+export function validatePostId(
+  postId: string
+): ValidationErrors<GetPostErrors> {
+  const errors: GetPostErrors = {};
+
+  if (postId.trim().length === 0) {
+    errors.postId = "Post Id must not be empty";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length === 0,
+  };
+}
+
+export function validatePostCreationInput(
+  postBody: string
+): ValidationErrors<CreatePostErrors> {
+  const errors: CreatePostErrors = {};
+  if (postBody.trim().length === 0) {
+    errors.postBody = "The post body must not be empty";
   }
 
   return {

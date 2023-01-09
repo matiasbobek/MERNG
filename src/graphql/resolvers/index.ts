@@ -3,9 +3,10 @@ import usersResolvers from "./users";
 
 export const resolvers = {
   Query: {
-    ...postsResolvers,
+    ...postsResolvers.Query,
   },
   Mutation: {
     ...usersResolvers,
+    ...postsResolvers.Mutation,
   },
 };

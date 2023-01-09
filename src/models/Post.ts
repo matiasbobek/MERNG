@@ -1,13 +1,16 @@
 import { model, Schema } from "mongoose";
+import { DocumentResult } from "../graphql/resolvers/posts";
 import Post from "../types/Post";
 
+interface PostModel extends Post, Document, DocumentResult<Post> {}
+
 const postSchema = new Schema({
-  body: String!,
+  postBody: String!,
   username: String!,
   createdAt: String!,
   comments: [
     {
-      body: String,
+      commentBody: String,
       username: String,
       createdAt: String,
     },
@@ -24,4 +27,4 @@ const postSchema = new Schema({
   },
 });
 
-export default model<Post>("Post", postSchema);
+export default model<PostModel>("Post", postSchema);

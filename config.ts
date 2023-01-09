@@ -1,4 +1,5 @@
 const config = {
+  PORT: 5001,
   MONGODB_URI:
     "mongodb+srv://matiasbobek:NP15Q3CMV3uUsxgn@cluster0.jg5tbmj.mongodb.net/merng?retryWrites=true&w=majority",
   SECRET_JWT_KEY: "someverysecretkey",
