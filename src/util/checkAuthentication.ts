@@ -2,7 +2,7 @@ import { AuthenticationError } from "apollo-server";
 import jwt from "jsonwebtoken";
 
 import config from "../../config";
-import { UserRequestContext } from "../graphql/resolvers/posts";
+import { UserRequestContext } from "../graphql/resolvers/users";
 
 interface JWTUser extends jwt.JwtPayload {
   username: string;
@@ -10,7 +10,7 @@ interface JWTUser extends jwt.JwtPayload {
   email: string;
 }
 
-function chekAuth(context: UserRequestContext): JWTUser {
+function checkAuthentication(context: UserRequestContext): JWTUser {
   const authHeader = context.req.headers.authorization;
   if (authHeader) {
     const token = authHeader.split("Bearer ")[1];
@@ -32,4 +32,4 @@ function chekAuth(context: UserRequestContext): JWTUser {
   }
 }
 
-export default chekAuth;
+export default checkAuthentication;

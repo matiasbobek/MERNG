@@ -7,7 +7,8 @@ import {
   validatePostId,
   validatePostCreationInput,
 } from "../../util/validators";
-import checkAuth from "../../util/checkAuth";
+import checkAuthentication from "../../util/checkAuthentication";
+import { UserRequestContext } from "./users";
 
 interface PostIDInput {
   postId: string;
@@ -15,14 +16,6 @@ interface PostIDInput {
 
 interface CreatePostInput {
   postBody: string;
-}
-
-export interface UserRequestContext extends Request {
-  req: {
-    headers: {
-      authorization: string;
-    };
-  };
 }
 
 // For the mongoose response when creating a model instance
@@ -78,7 +71,7 @@ const Mutation = {
       });
     }
 
-    const user = checkAuth(context);
+    const user = checkAuthentication(context);
 
     const newPost = new PostModel({
       postBody,
@@ -99,7 +92,7 @@ const Mutation = {
     { postId }: PostIDInput,
     context: UserRequestContext
   ): Promise<string> {
-    const user = checkAuth(context);
+    const user = checkAuthentication(context);
 
     const { errors, valid } = validatePostId(postId);
 
@@ -113,14 +106,52 @@ const Mutation = {
     if (!post) {
       errors.general = "Post not found";
       throw new UserInputError("Post not found", { errors });
-    } else {
-      if (user.username === post.username) {
-        await post.delete();
-        return "Post deleted succesfully";
-      } else {
-        throw new AuthenticationError("This username can/'t delete this post");
-      }
     }
+
+    if (user.username === post.username) {
+      await post.delete();
+      return "Post deleted succesfully";
+    } else {
+      throw new AuthenticationError("This username can/'t delete this post");
+    }
+  },
+
+  async toggleLikePost(
+    _: any,
+    { postId }: PostIDInput,
+    context: UserRequestContext
+  ) {
+    const user = checkAuthentication(context);
+
+    const { errors, valid } = validatePostId(postId);
+
+    if (!valid) {
+      throw new UserInputError("Post id must not be empty", {
+        errors,
+      });
+    }
+    const post = await PostModel.findById(postId);
+
+    if (!post) {
+      errors.general = "Post not found";
+      throw new UserInputError("Post not found", { errors });
+    }
+
+    const likeIndex = post.likes.findIndex(
+      (like) => like.username == user.username
+    );
+
+    if (likeIndex === -1) {
+      post.likes.unshift({
+        username: user.username,
+        createdAt: new Date().toISOString(),
+      });
+    } else {
+      post.likes.splice(likeIndex, 1);
+    }
+
+    const newPost = await post.save();
+    return newPost;
   },
 };
 

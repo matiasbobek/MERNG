@@ -1,5 +1,6 @@
 node_modules
 .env
-config.js
+config.ts
 dist
 TODO.md
+COURSE-NOTES.md

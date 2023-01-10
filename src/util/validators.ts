@@ -27,6 +27,13 @@ interface CreatePostErrors {
   postBody?: string;
 }
 
+interface CreateCommentErrors extends GetPostErrors {
+  commentBody?: string;
+}
+
+interface DeleteCommentErrors extends GetPostErrors {
+  commentId?: string;
+}
 /*
  * User mutation arguments validations
  */
@@ -106,6 +113,48 @@ export function validatePostCreationInput(
   const errors: CreatePostErrors = {};
   if (postBody.trim().length === 0) {
     errors.postBody = "The post body must not be empty";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length === 0,
+  };
+}
+
+/*
+ * Comment mutation arguments validations
+ */
+
+export function validateCommentCreationInput(
+  postId: string,
+  commentBody: string
+): ValidationErrors<CreateCommentErrors> {
+  const errors: CreateCommentErrors = {};
+  if (postId.trim().length === 0) {
+    errors.postId = "Post ID must not be empty";
+  }
+
+  if (commentBody.trim().length === 0) {
+    errors.commentBody = "Comment body must not be empty";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length === 0,
+  };
+}
+
+export function validateCommentDeletionInput(
+  postId: string,
+  commentId: string
+): ValidationErrors<DeleteCommentErrors> {
+  const errors: DeleteCommentErrors = {};
+  if (postId.trim().length === 0) {
+    errors.postId = "Post ID must not be empty";
+  }
+
+  if (commentId.trim().length === 0) {
+    errors.commentId = "Comment ID must not be empty";
   }
 
   return {

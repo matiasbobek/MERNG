@@ -8,6 +8,14 @@ import {
   validateRegisterInput,
 } from "../../util/validators";
 
+export interface UserRequestContext extends Request {
+  req: {
+    headers: {
+      authorization: string;
+    };
+  };
+}
+
 export interface RegisterInput extends User {
   confirmPassword: string;
 }
