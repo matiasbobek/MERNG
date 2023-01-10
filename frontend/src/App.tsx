@@ -1,11 +1,23 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+import "semantic-ui-css/semantic.min.css";
 import "./App.css";
+import MenuBar from "./components/MenuBar";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   return (
-    <div className="App">
-      <h1> MERNG social media test</h1>
-    </div>
+    <Router>
+      <MenuBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </Router>
   );
 }
 
