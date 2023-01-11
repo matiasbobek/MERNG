@@ -27,4 +27,38 @@ export const Querys = {
       }
     }
   `,
+  REGISTER_USER_MUTATION: gql`
+    mutation register(
+      $username: String!
+      $email: String!
+      $password: String!
+      $confirmPassword: String!
+    ) {
+      register(
+        inputData: {
+          username: $username
+          email: $email
+          password: $password
+          confirmPassword: $confirmPassword
+        }
+      ) {
+        id
+        email
+        username
+        createdAt
+        token
+      }
+    }
+  `,
+  LOGIN_USER_MUTATION: gql`
+    mutation login($username: String!, $password: String!) {
+      login(inputData: { username: $username, password: $password }) {
+        id
+        email
+        username
+        createdAt
+        token
+      }
+    }
+  `,
 };

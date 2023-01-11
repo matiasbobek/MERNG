@@ -7,13 +7,13 @@ export interface ValidationErrors<T> {
   valid: boolean;
 }
 
-interface LoginInputErrors {
+export interface LoginInputErrors {
   username?: string;
   password?: string;
   general?: string;
 }
 
-interface RegisterInputErrors extends LoginInputErrors {
+export interface RegisterInputErrors extends LoginInputErrors {
   email?: string;
   confirmPassword?: string;
 }

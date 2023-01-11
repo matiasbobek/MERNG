@@ -88,7 +88,7 @@ const Mutation = {
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-      errors.general = "Wrong credentials";
+      errors.general = "Invalid username or password entered";
       throw new UserInputError("Wrong credentials", { errors });
     }
 
