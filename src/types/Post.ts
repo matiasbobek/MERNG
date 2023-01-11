@@ -8,6 +8,7 @@ interface Post {
   username: string;
   createdAt: string;
   comments: Comment[];
+  commentsCount?: number;
   likes: [
     {
       id?: Types.ObjectId;
@@ -15,6 +16,7 @@ interface Post {
       createdAt: string;
     }
   ];
+  likesCount?: number;
   user: {
     type: Schema.Types.ObjectId;
     ref: "users";
