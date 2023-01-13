@@ -16,11 +16,17 @@ export interface UserRequestContext extends Request {
   };
 }
 
-export interface RegisterInput extends User {
-  confirmPassword: string;
+export interface LoginInput {
+  username: string;
+  password: string;
 }
 
-// For the graphql input structure (TODO check if this is ok)
+export interface RegisterInput extends LoginInput {
+  confirmPassword: string;
+  email: string;
+}
+
+// For the graphql input structure
 interface InputArgs<T> {
   inputData: T;
 }

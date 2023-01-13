@@ -1,14 +1,17 @@
 import { useMutation } from "@apollo/client";
-import React, { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { Querys } from "../graphql/Querys";
 import { RegisterInputErrors } from "../../../src/util/validators";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 function Register(props: any) {
   const [errors, setErrors] = useState<RegisterInputErrors>({});
-
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { userState } = useContext(AuthContext);
+
   const [values, setValues] = useState({
     username: "",
     password: "",
@@ -19,7 +22,8 @@ function Register(props: any) {
   const [registerUser, { loading }] = useMutation(
     Querys.REGISTER_USER_MUTATION,
     {
-      update(_, result) {
+      update(_, { data: { register: userData } }) {
+        login(userData);
         navigate("/");
       },
       onError(err) {
@@ -41,6 +45,12 @@ function Register(props: any) {
     setValues({ ...values, [event.target.name]: event.target.value });
     setErrors({ ...errors, [event.target.name]: undefined });
   }
+
+  useEffect(() => {
+    if (userState.user) {
+      navigate("/");
+    }
+  }, [userState.user, navigate]);
 
   return (
     <div style={{ width: 400, margin: "auto" }}>

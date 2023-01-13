@@ -1,28 +1,30 @@
+import { useContext, useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
-import React, { useState } from "react";
 import { Button, Form, Message } from "semantic-ui-react";
 import { Querys } from "../graphql/Querys";
 import { LoginInputErrors } from "../../../src/util/validators";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 function Login(props: any) {
+  const { userState, login } = useContext(AuthContext);
   const [errors, setErrors] = useState<LoginInputErrors>({});
-
-  const navigate = useNavigate();
-  const [values, setValues] = useState({
+  const [loginValues, setLoginValues] = useState({
     username: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const [loginUser, { loading }] = useMutation(Querys.LOGIN_USER_MUTATION, {
-    update(_, result) {
+    update(_, { data: { login: userData } }) {
+      login(userData);
       navigate("/");
     },
     onError(err) {
       if (err.graphQLErrors[0])
         setErrors(err.graphQLErrors[0].extensions.errors as LoginInputErrors);
     },
-    variables: values,
+    variables: loginValues,
   });
 
   function onSubmit(event: any) {
@@ -31,9 +33,15 @@ function Login(props: any) {
   }
 
   function onChange(event: any) {
-    setValues({ ...values, [event.target.name]: event.target.value });
+    setLoginValues({ ...loginValues, [event.target.name]: event.target.value });
     setErrors({ ...errors, [event.target.name]: undefined });
   }
+
+  useEffect(() => {
+    if (userState.user) {
+      navigate("/");
+    }
+  }, [userState.user, navigate]);
 
   return (
     <div style={{ width: 400, margin: "auto" }}>
@@ -45,7 +53,7 @@ function Login(props: any) {
           label="Username"
           placeholed="username..."
           name="username"
-          value={values.username}
+          value={loginValues.username}
           onChange={onChange}
         ></Form.Input>
         <Form.Input
@@ -55,7 +63,7 @@ function Login(props: any) {
           placeholed="password..."
           name="password"
           type="password"
-          value={values.password}
+          value={loginValues.password}
           onChange={onChange}
         ></Form.Input>
         <Button type="submit" primary>
