@@ -19,22 +19,19 @@ function Register(props: any) {
     confirmPassword: "",
   });
 
-  const [registerUser, { loading }] = useMutation(
-    Querys.REGISTER_USER_MUTATION,
-    {
-      update(_, { data: { register: userData } }) {
-        login(userData);
-        navigate("/");
-      },
-      onError(err) {
-        if (err.graphQLErrors[0])
-          setErrors(
-            err.graphQLErrors[0].extensions.errors as RegisterInputErrors
-          );
-      },
-      variables: values,
-    }
-  );
+  const [registerUser, { loading }] = useMutation(Querys.REGISTER_USER, {
+    update(_, { data: { register: userData } }) {
+      login(userData);
+      navigate("/");
+    },
+    onError(err) {
+      if (err.graphQLErrors[0])
+        setErrors(
+          err.graphQLErrors[0].extensions.errors as RegisterInputErrors
+        );
+    },
+    variables: values,
+  });
 
   function onSubmit(event: any) {
     event.preventDefault();

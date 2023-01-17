@@ -15,7 +15,7 @@ function Login(props: any) {
   });
   const navigate = useNavigate();
 
-  const [loginUser, { loading }] = useMutation(Querys.LOGIN_USER_MUTATION, {
+  const [loginUser, { loading }] = useMutation(Querys.LOGIN_USER, {
     update(_, { data: { login: userData } }) {
       login(userData);
       navigate("/");

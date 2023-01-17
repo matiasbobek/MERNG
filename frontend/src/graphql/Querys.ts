@@ -6,7 +6,7 @@ export interface GetPostsData {
 }
 
 export const Querys = {
-  FETCH_POSTS_QUERY: gql`
+  FETCH_POSTS: gql`
     {
       getPosts {
         id
@@ -27,7 +27,7 @@ export const Querys = {
       }
     }
   `,
-  REGISTER_USER_MUTATION: gql`
+  REGISTER_USER: gql`
     mutation register(
       $username: String!
       $email: String!
@@ -50,7 +50,7 @@ export const Querys = {
       }
     }
   `,
-  LOGIN_USER_MUTATION: gql`
+  LOGIN_USER: gql`
     mutation login($username: String!, $password: String!) {
       login(inputData: { username: $username, password: $password }) {
         id
@@ -58,6 +58,27 @@ export const Querys = {
         username
         createdAt
         token
+      }
+    }
+  `,
+  CREATE_POST: gql`
+    mutation createPost($postBody: String!) {
+      createPost(postBody: $postBody) {
+        id
+        postBody
+        createdAt
+        username
+        likesCount
+        likes {
+          username
+        }
+        commentsCount
+        comments {
+          id
+          username
+          createdAt
+          commentBody
+        }
       }
     }
   `,
