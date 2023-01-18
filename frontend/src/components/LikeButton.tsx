@@ -29,7 +29,7 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
   });
 
   function handleOnLike() {
-    toggleLikePost();
+    user && toggleLikePost();
   }
 
   const heartButton = user ? (
@@ -43,7 +43,11 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
   );
 
   useEffect(() => {
-    if (user && likes.find((like) => like.username === user.username)) {
+    if (
+      user &&
+      likes &&
+      likes.find((like) => like.username === user.username)
+    ) {
       setLiked(true);
     } else setLiked(false);
   }, [likes, user]);

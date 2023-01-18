@@ -5,6 +5,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { LikeButton } from "./LikeButton";
+import { DeleteButton } from "./DeleteButton";
 
 interface PostCardProps {
   post: Post;
@@ -53,14 +54,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
           </Label>
         </Button>
         {user && user.username === post.username && (
-          <Button
-            as="div"
-            color="red"
-            floated="right"
-            onClick={() => console.log("delete post")}
-          >
-            <Icon name="trash" style={{ margin: 0 }} />
-          </Button>
+          <DeleteButton postId={post.id} />
         )}
       </Card.Content>
     </Card>

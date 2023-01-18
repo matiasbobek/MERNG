@@ -6,6 +6,7 @@ import MenuBar from "./components/MenuBar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import SinglePost from "./pages/SinglePost";
 import { AuthProvider } from "./context/AuthProvider";
 
 import { Container } from "semantic-ui-react";
@@ -20,6 +21,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/posts/:postId" element={<SinglePost />} />
           </Routes>
         </Container>
       </Router>

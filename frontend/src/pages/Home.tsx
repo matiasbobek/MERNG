@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { GetPostsData, Querys } from "../graphql/Querys";
-import { Grid, Transition } from "semantic-ui-react";
+import { Grid, Loader, Transition } from "semantic-ui-react";
 import PostCard from "../components/PostCard";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
@@ -28,7 +28,7 @@ function Home() {
           </Grid.Column>
         )}
         {loading ? (
-          <h1>loading posts...</h1>
+          <Loader active inline="centered" />
         ) : (
           <Transition.Group>
             {posts &&

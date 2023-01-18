@@ -5,6 +5,10 @@ export interface GetPostsData {
   getPosts: Post[];
 }
 
+export interface GetPostData {
+  getPost: Post;
+}
+
 export const Querys = {
   FETCH_POSTS: gql`
     query GetPosts {
@@ -24,6 +28,29 @@ export const Querys = {
           createdAt
           commentBody
         }
+      }
+    }
+  `,
+  FETCH_POST: gql`
+    query GetPost($postId: ID) {
+      getPost(postId: $postId) {
+        id
+        postBody
+        username
+        createdAt
+        comments {
+          id
+          createdAt
+          username
+          commentBody
+        }
+        likes {
+          id
+          createdAt
+          username
+        }
+        likesCount
+        commentsCount
       }
     }
   `,
@@ -92,6 +119,11 @@ export const Querys = {
         }
         likesCount
       }
+    }
+  `,
+  DELETE_POST: gql`
+    mutation DeletePost($postId: ID!) {
+      deletePost(postId: $postId)
     }
   `,
 };
