@@ -7,7 +7,7 @@ export interface GetPostsData {
 
 export const Querys = {
   FETCH_POSTS: gql`
-    {
+    query GetPosts {
       getPosts {
         id
         postBody
@@ -79,6 +79,18 @@ export const Querys = {
           createdAt
           commentBody
         }
+      }
+    }
+  `,
+  TOGGLE_LIKE_POST: gql`
+    mutation ToggleLikePost($postId: String!) {
+      toggleLikePost(postId: $postId) {
+        id
+        likes {
+          id
+          username
+        }
+        likesCount
       }
     }
   `,

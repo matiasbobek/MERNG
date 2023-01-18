@@ -1,6 +1,7 @@
 import { Schema, Types } from "mongoose";
 
 import { Comment } from "./Comment";
+import { Like } from "./Like";
 
 interface Post {
   id: Types.ObjectId;
@@ -9,14 +10,8 @@ interface Post {
   createdAt: string;
   comments: Comment[];
   commentsCount?: number;
-  likes: [
-    {
-      id?: Types.ObjectId;
-      username: string;
-      createdAt: string;
-    }
-  ];
-  likesCount?: number;
+  likes: Like[];
+  likesCount: number;
   user: {
     type: Schema.Types.ObjectId;
     ref: "users";
