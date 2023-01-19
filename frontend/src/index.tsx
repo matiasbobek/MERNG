@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import {
@@ -10,7 +9,7 @@ import {
 import { setContext } from "apollo-link-context";
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:5002/",
+  uri: `http://localhost:${process.env.port || 5000}/`,
 });
 
 const authLink = setContext(() => {
