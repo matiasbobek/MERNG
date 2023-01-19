@@ -126,4 +126,24 @@ export const Querys = {
       deletePost(postId: $postId)
     }
   `,
+  CREATE_COMMENT: gql`
+    mutation CreateComment($postId: String!, $commentBody: String!) {
+      createComment(postId: $postId, commentBody: $commentBody) {
+        id
+        comments {
+          id
+        }
+      }
+    }
+  `,
+  DELETE_COMMENT: gql`
+    mutation DeleteComment($postId: String!, $commentId: ID!) {
+      deleteComment(postId: $postId, commentId: $commentId) {
+        id
+        comments {
+          id
+        }
+      }
+    }
+  `,
 };

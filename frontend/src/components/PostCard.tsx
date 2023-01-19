@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Card, Icon, Label, Image, Button } from "semantic-ui-react";
 import Post from "../../../src/types/Post";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { LikeButton } from "./LikeButton";
 import { DeleteButton } from "./DeleteButton";
@@ -22,16 +22,15 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
     commentsCount,
   } = post;
 
+  const navigate = useNavigate();
+
   const {
     userState: { user },
   } = useContext(AuthContext);
 
-  function onCommentPost() {
-    console.log("Comment post");
-  }
   return (
     <Card fluid>
-      <Card.Content>
+      <Card.Content onClick={() => navigate(`/posts/${id}`)}>
         <Image
           floated="right"
           size="mini"
@@ -45,8 +44,8 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
       </Card.Content>
       <Card.Content extra>
         <LikeButton user={user} post={{ id, likesCount, likes }} />
-        <Button as="div" labelPosition="right" onClick={onCommentPost}>
-          <Button color="blue" basic>
+        <Button as="div" labelPosition="right">
+          <Button as={Link} to={`/posts/${id}`} color="blue" basic>
             <Icon name="comments" />
           </Button>
           <Label basic color="blue" pointing="left">
