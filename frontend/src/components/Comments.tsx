@@ -8,7 +8,7 @@ import {
   Icon,
   Confirm,
 } from "semantic-ui-react";
-import { useContext, useState } from "react";
+import { LegacyRef, useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import moment from "moment";
 import { useMutation } from "@apollo/client";
@@ -17,9 +17,14 @@ import { Querys } from "../graphql/Querys";
 interface CommentsProps {
   comments: CommentType[];
   postId: Types.ObjectId;
+  commentInputRef?: LegacyRef<HTMLTextAreaElement>;
 }
 
-export const Comments: React.FC<CommentsProps> = ({ comments, postId }) => {
+export const Comments: React.FC<CommentsProps> = ({
+  comments,
+  postId,
+  commentInputRef,
+}) => {
   const CONFIRM_DELETE_CONTENT = "Are you sure to delete this comment?";
 
   const {
@@ -51,6 +56,7 @@ export const Comments: React.FC<CommentsProps> = ({ comments, postId }) => {
   function onCreateComment() {
     createComment();
   }
+
   return (
     <>
       <Comment.Group>
@@ -95,7 +101,9 @@ export const Comments: React.FC<CommentsProps> = ({ comments, postId }) => {
 
         {user && (
           <Form reply>
-            <Form.TextArea
+            <textarea
+              style={{ marginBottom: "15px" }}
+              ref={commentInputRef}
               value={newCommentBody}
               onChange={(e) => setNewCommentBody(e.target.value)}
             />

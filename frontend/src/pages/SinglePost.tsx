@@ -1,11 +1,19 @@
 import { useQuery } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Card, Grid, Icon, Label, Message } from "semantic-ui-react";
+import {
+  Button,
+  Card,
+  Grid,
+  Icon,
+  Label,
+  Message,
+  Popup,
+} from "semantic-ui-react";
 import moment from "moment";
 import { GetPostData, Querys } from "../graphql/Querys";
 import { Loader, Image, Segment } from "semantic-ui-react";
 import { LikeButton } from "../components/LikeButton";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { DeleteButton } from "../components/DeleteButton";
 import { Comments } from "../components/Comments";
@@ -20,6 +28,7 @@ const loadingComponent = (
 const SinglePost: React.FC<any> = (props) => {
   const { postId } = useParams();
   const navigate = useNavigate();
+  const commentInputRef = useRef<any>();
 
   const { data, loading, error } = useQuery<GetPostData>(Querys.FETCH_POST, {
     variables: { postId },
@@ -28,6 +37,11 @@ const SinglePost: React.FC<any> = (props) => {
   const {
     userState: { user },
   } = useContext(AuthContext);
+
+  function onClickCommentButton() {
+    if (!user) navigate("/login");
+    if (commentInputRef.current) commentInputRef.current.focus();
+  }
 
   const singlePostCard = (
     <>
@@ -53,14 +67,24 @@ const SinglePost: React.FC<any> = (props) => {
               <hr />
               <Card.Content extra>
                 <LikeButton user={user} post={data.getPost} />
-                <Button as="div" labelPosition="right">
-                  <Button basic color="blue">
-                    <Icon name="comments"></Icon>
-                  </Button>
-                  <Label basic color="blue" pointing="left">
-                    {data.getPost.commentsCount}
-                  </Label>
-                </Button>
+                <Popup
+                  inverted
+                  content="Comment post"
+                  trigger={
+                    <Button
+                      as="div"
+                      labelPosition="right"
+                      onClick={onClickCommentButton}
+                    >
+                      <Button basic color="blue">
+                        <Icon name="comments"></Icon>
+                      </Button>
+                      <Label basic color="blue" pointing="left">
+                        {data.getPost.commentsCount}
+                      </Label>
+                    </Button>
+                  }
+                />
                 {user && user.username === data.getPost.username && (
                   <DeleteButton
                     postId={data.getPost.id}
@@ -91,6 +115,7 @@ const SinglePost: React.FC<any> = (props) => {
               <Comments
                 comments={data?.getPost.comments!}
                 postId={data?.getPost.id!}
+                commentInputRef={commentInputRef}
               />
             </Grid.Column>
           </Grid.Row>

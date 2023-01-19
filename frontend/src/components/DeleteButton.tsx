@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client";
 import { Types } from "mongoose";
 import { useState } from "react";
-import { Button, Icon, Confirm } from "semantic-ui-react";
+import { Button, Icon, Confirm, Popup } from "semantic-ui-react";
 import { Querys } from "../graphql/Querys";
 
 export const DeleteButton: React.FC<{
@@ -30,14 +30,20 @@ export const DeleteButton: React.FC<{
 
   return (
     <>
-      <Button
-        as="div"
-        color="red"
-        floated="right"
-        onClick={() => setConfirmOpen(true)}
-      >
-        <Icon name="trash" style={{ margin: 0 }} />
-      </Button>
+      <Popup
+        inverted
+        content="Delete post"
+        trigger={
+          <Button
+            as="div"
+            color="red"
+            floated="right"
+            onClick={() => setConfirmOpen(true)}
+          >
+            <Icon name="trash" style={{ margin: 0 }} />
+          </Button>
+        }
+      />
       <Confirm
         open={confirmOpen}
         onCancel={() => setConfirmOpen(false)}

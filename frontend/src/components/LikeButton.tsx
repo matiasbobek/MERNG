@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import { Types } from "mongoose";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Icon, Label } from "semantic-ui-react";
+import { Button, Icon, Label, Popup } from "semantic-ui-react";
 import { Like } from "../../../src/types/Like";
 import User from "../../../src/types/User";
 import { Querys } from "../graphql/Querys";
@@ -53,11 +53,17 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
   }, [likes, user]);
 
   return (
-    <Button as="div" labelPosition="right" onClick={handleOnLike}>
-      {heartButton}
-      <Label basic color="teal" pointing="left">
-        {likesCount}
-      </Label>
-    </Button>
+    <Popup
+      inverted
+      content={liked ? "Unlike post" : "Like post"}
+      trigger={
+        <Button as="div" labelPosition="right" onClick={handleOnLike}>
+          {heartButton}
+          <Label basic color="teal" pointing="left">
+            {likesCount}
+          </Label>
+        </Button>
+      }
+    />
   );
 };
