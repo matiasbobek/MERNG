@@ -7,10 +7,10 @@ The server handles Posts (CRUD) and Users (LOGIN/REGISTER) resources through Gra
 On the client side, it is built with React/Typescript and Semantic-ui components. The routing is resolved with react-router and the requests and responses from the server are handled by GraphQL using Apollo-client.
 
 ### Home
-![Alt text](frontend/public/MERNG-Home.png?raw=true "Home" width=50% height=50%)
+![Alt text](frontend/public/MERNG-Home.png?raw=true "Home")
 
 ### Single post page
-![Alt text](frontend/public/MERNG-SinglePostPage.png?raw=true "SinglePost" width=50% height=50%)
+![Alt text](frontend/public/MERNG-SinglePostPage.png?raw=true "SinglePost")
 
 ### Single post page
 
