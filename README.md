@@ -6,15 +6,6 @@ MERNG is a social network MVP that uses MongoDB (Mongoose ODM), Express (Apollo 
 The server handles Posts (CRUD) and Users (LOGIN/REGISTER) resources through GraphQL queries.
 On the client side, it is built with React/Typescript and Semantic-ui components. The routing is resolved with react-router and the requests and responses from the server are handled by GraphQL using Apollo-client.
 
-### Home
-![Alt text](frontend/public/MERNG-Home.png?raw=true "Home")
-
-### Single post page
-![Alt text](frontend/public/MERNG-SinglePostPage.png?raw=true "SinglePost")
-
-### Single post page
-
-
 ## Setup
 
 - Create a config.ts file on root directory that exposes this object
@@ -25,6 +16,14 @@ On the client side, it is built with React/Typescript and Semantic-ui components
     };
 - On root folder run npm start
 - On /frontend run npm start
+
+## Preview
+#### Home
+![Alt text](frontend/public/MERNG-Home.png?raw=true "Home")
+
+#### Single post page
+![Alt text](frontend/public/MERNG-SinglePostPage.png?raw=true "SinglePost")
+
 
 ### Tech stack
 
